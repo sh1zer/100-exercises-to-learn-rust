@@ -30,7 +30,7 @@ impl Ticket {
         if description.len() > 500 {
             panic!("Description cannot be longer than 500 bytes");
         }
-
+        
         Ticket {
             title,
             description,
@@ -38,7 +38,12 @@ impl Ticket {
         }
     }
     pub fn assigned_to(&self) -> &str {
-        todo!()
+        if let Status::InProgress { assigned_to } = &self.status{
+            assigned_to
+        }
+        else{
+            panic!("Only `In-Progress` tickets can be assigned to someone")
+        }
     }
 }
 

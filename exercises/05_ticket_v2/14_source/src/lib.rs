@@ -1,3 +1,6 @@
+
+use crate::status::ParseStatusError;
+
 use crate::status::Status;
 
 // We've seen how to declare modules in one of the earliest exercises, but
@@ -23,6 +26,8 @@ pub enum TicketNewError {
     DescriptionCannotBeEmpty,
     #[error("Description cannot be longer than 500 bytes")]
     DescriptionTooLong,
+    #[error("{0}")]
+    InvalidStatus(#[from] ParseStatusError),
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -48,7 +53,7 @@ impl Ticket {
         }
 
         // TODO: Parse the status string into a `Status` enum.
-
+        let status = Status::try_from(status)?;
         Ok(Ticket {
             title,
             description,
